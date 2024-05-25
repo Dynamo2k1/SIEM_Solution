@@ -1,7 +1,7 @@
 # I am currently working on this project
 - For installation and configuration of agent and mysql go to siem-frontend
 
-# Sesurity Information and Event Management(SIEM) Solution
+# Security Information and Event Management(SIEM) Solution
 
 ## Overview
 
