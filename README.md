@@ -467,7 +467,15 @@ def get_db_connection():
             cursor.close()
             conn.close()
     ```
+This function takes a dictionary `data` containing various usage metrics and saves it into a MySQL database table named `usage_data`. The function consists of the following steps:
 
+1. Establishes a connection to the MySQL database using `get_db_connection()` function.
+2. Creates a cursor object to execute SQL queries.
+3. Constructs an SQL `INSERT` query to insert data into the `usage_data` table.
+4. Executes the query using cursor's `execute()` method with data values as parameters.
+5. Commits the transaction to persist changes to the database.
+6. Handles any exceptions that may occur during the execution, logging the error.
+7. Closes the cursor and connection to release resources.
 ##### Main Loop
 
 The main loop continuously collects data at specified intervals and saves it to the database.
@@ -486,7 +494,16 @@ while True:
     logging.info(f"Data collected and saved: {data}")
     time.sleep(60)  # Collect data every 60 seconds
 ```
+The main loop continuously collects usage data at specified intervals and saves it to the MySQL database using the `save_data_to_mysql()` function. The loop follows these steps:
 
+1. Collects various usage metrics such as CPU usage, memory usage, disk usage, bytes sent, bytes received, and current timestamp using respective functions (`get_cpu_usage()`, `get_memory_usage()`, `get_disk_usage()`, `get_network_usage()`, and `datetime.datetime.now().isoformat()`).
+2. Constructs a dictionary `data` containing these metrics.
+3. Calls `save_data_to_mysql(data)` to save the collected data into the database.
+4. Logs the information about the collected and saved data using the `logging` module.
+5. Pauses execution for 60 seconds using `time.sleep(60)` before collecting data again.
+
+
+   
 This section of the `agent.py` script illustrates how system metrics (CPU, memory, disk, and network usage) are collected and stored in a MySQL database. The script uses the `psutil` library to gather system statistics, the `mysql.connector` library to interact with the MySQL database, and the `logging` module to log the process.
 ## Conclusion
 
