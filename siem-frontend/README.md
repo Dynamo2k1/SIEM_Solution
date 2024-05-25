@@ -287,13 +287,49 @@ app.listen(PORT, () => {
 });
 ```
 
-## Data Collection Agent (Python)
 
-### `agent.py`
+### Data Collection Agent (Python)
 
-The Python script collects system usage data (CPU, memory, disk usage) and sends it to the backend API.
+#### `agent.py`
 
-#### Key Functions
+The Python script collects system usage data (CPU, memory, disk usage) and network details, then inserts this data into a MySQL database.
+
+##### Importing Required Libraries
+
+```python
+import psutil
+import requests
+import datetime
+import time
+import mysql.connector
+import logging
+import os
+```
+
+##### Setting Up Logging
+
+```python
+# Setting up logging
+logging.basicConfig(filename='agent.log', level=logging.INFO, 
+                    format='%(asctime)s %(levelname)s %(message)s')
+```
+
+##### MySQL Database Connection
+
+```python
+# MySQL database connection
+db_config = {
+    'user': 'dynamo2k1',
+    'password': '1590',
+    'host': '192.168.171.206',
+    'database': 'siem_solution'
+}
+
+def get_db_connection():
+    return mysql.connector.connect(**db_config)
+```
+
+##### Collecting System Usage Data
 
 1. **`get_cpu_usage`**: Collects CPU usage.
 
@@ -318,31 +354,62 @@ The Python script collects system usage data (CPU, memory, disk usage) and sends
         return disk.percent
     ```
 
-4. **`send_data_to_server`**: Sends collected data to the backend API.
+4. **`get_network_usage`**: Collects network usage.
 
     ```python
-    def send_data_to_server(data):
-        try:
-            response = requests.post('http://192.168.171.206:5000/api/usage_data', json=data)
-            response.raise_for_status()
-        except requests.exceptions.RequestException as e:
-            print(f"Error sending data to server: {e}")
-    ```
-
-5. **Main Loop**: Continuously collects and sends data at specified intervals.
-
-    ```python
-    while True:
-        data = {
-            'cpu_usage': get_cpu_usage(),
-            'memory_usage': get_memory_usage(),
-            'disk_usage': get_disk_usage(),
-            'timestamp': datetime.datetime.now().isoformat()
+    def get_network_usage():
+        net_io = psutil.net_io_counters()
+        return {
+            'bytes_sent': net_io.bytes_sent,
+            'bytes_recv': net_io.bytes_recv
         }
-        send_data_to_server(data)
-        time.sleep(60)  # Collect data every 60 seconds
     ```
 
+##### Saving Data to MySQL
+
+1. **`save_data_to_mysql`**: Inserts collected data into the MySQL database.
+
+    ```python
+    def save_data_to_mysql(data):
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        try:
+            query = """
+                INSERT INTO usage_data (cpu_usage, memory_usage, disk_usage, bytes_sent, bytes_recv, timestamp)
+                VALUES (%s, %s, %s, %s, %s, %s)
+            """
+            cursor.execute(query, (
+                data['cpu_usage'], data['memory_usage'], data['disk_usage'],
+                data['bytes_sent'], data['bytes_recv'], data['timestamp']
+            ))
+            conn.commit()
+        except mysql.connector.Error as err:
+            logging.error(f"Error: {err}")
+        finally:
+            cursor.close()
+            conn.close()
+    ```
+
+##### Main Loop
+
+The main loop continuously collects data at specified intervals and saves it to the database.
+
+```python
+while True:
+    data = {
+        'cpu_usage': get_cpu_usage(),
+        'memory_usage': get_memory_usage(),
+        'disk_usage': get_disk_usage(),
+        'bytes_sent': get_network_usage()['bytes_sent'],
+        'bytes_recv': get_network_usage()['bytes_recv'],
+        'timestamp': datetime.datetime.now().isoformat()
+    }
+    save_data_to_mysql(data)
+    logging.info(f"Data collected and saved: {data}")
+    time.sleep(60)  # Collect data every 60 seconds
+```
+
+This section of the `agent.py` script illustrates how system metrics (CPU, memory, disk, and network usage) are collected and stored in a MySQL database. The script uses the `psutil` library to gather system statistics, the `mysql.connector` library to interact with the MySQL database, and the `logging` module to log the process.
 ## Conclusion
 
 This SIEM dashboard efficiently visualizes and manages security logs through a user-friendly interface. The React front-end interacts seamlessly with the Express back-end to fetch and display data from a MySQL database. The Python agent collects and sends system usage data to the backend, ensuring up-to-date monitoring.
