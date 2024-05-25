@@ -41,6 +41,3 @@ The MySQL database used in this project has the following tables:
 
 ## Conclusion
 This SIEM solution provides a comprehensive approach to monitoring network traffic, extracting event logs, and tracking system performance. By integrating with a MySQL database, the system can store and analyze large amounts of data, enabling administrators to identify potential security threats and optimize system performance. With further improvements and enhancements, this solution can become a powerful tool for maintaining a secure and efficient IT infrastructure.
-
-Citations:
-[1] https://ppl-ai-file-upload.s3.amazonaws.com/web/direct-files/18582078/e86e7606-9fea-4e56-91d6-c093203f15ac/paste.txt
