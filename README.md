@@ -4,29 +4,29 @@
 This project is a Security Information and Event Management (SIEM) solution that monitors network traffic, extracts event logs, and tracks CPU and RAM usage. The system is built using Python and interacts with a MySQL database to store and analyze the collected data.
 
 ## Key Features
-1. **Network Monitoring**: The system continuously monitors network traffic using the Scapy library. It detects specific events like ping, Nmap scans, and SSH brute-force attacks, and logs them in the MySQL database[1].
+1. **Network Monitoring**: The system continuously monitors network traffic using the Scapy library. It detects specific events like ping, Nmap scans, and SSH brute-force attacks, and logs them in the MySQL database.
 
-2. **Event Log Extraction**: The system extracts event logs from Windows using PowerShell commands. It retrieves the 50 most recent security events, 50 most recent system events, and 20 most recent application events, and stores them in separate tables in the MySQL database[1].
+2. **Event Log Extraction**: The system extracts event logs from Windows using PowerShell commands. It retrieves the 50 most recent security events, 50 most recent system events, and 20 most recent application events, and stores them in separate tables in the MySQL database.
 
-3. **CPU and RAM Usage Tracking**: The system periodically checks the CPU and RAM usage of the system using the `psutil` library. The usage data is stored in the `usage_data` table of the MySQL database[1].
+3. **CPU and RAM Usage Tracking**: The system periodically checks the CPU and RAM usage of the system using the `psutil` library. The usage data is stored in the `usage_data` table of the MySQL database.
 
-4. **Database Integration**: The system uses the `mysql.connector` library to establish a connection to a MySQL database hosted on `192.168.171.206`. It creates the necessary tables if they don't exist and clears any existing data before inserting new data[1].
+4. **Database Integration**: The system uses the `mysql.connector` library to establish a connection to a MySQL database hosted on `192.168.171.206`. It creates the necessary tables if they don't exist and clears any existing data before inserting new data.
 
 ## Architecture
 The project consists of two main components:
 
-1. **Python Script (`agent.py`)**: This script is responsible for network monitoring, event log extraction, and CPU/RAM usage tracking. It uses various libraries like Scapy, `mysql.connector`, and `subprocess` to perform its tasks[1].
+1. **Python Script (`agent.py`)**: This script is responsible for network monitoring, event log extraction, and CPU/RAM usage tracking. It uses various libraries like Scapy, `mysql.connector`, and `subprocess` to perform its tasks.
 
-2. **Express Server (`server.py`)**: This component sets up an Express server in Node.js to interact with the MySQL database. It defines API endpoints to fetch data from the database and sends JSON responses[1].
+2. **Express Server (`server.py`)**: This component sets up an Express server in Node.js to interact with the MySQL database. It defines API endpoints to fetch data from the database and sends JSON responses.
 
 ## Database Schema
 The MySQL database used in this project has the following tables:
 
-1. **`logs`**: Stores network monitoring logs with fields like timestamp, source IP, destination IP, event type, user name, and message[1].
+1. **`logs`**: Stores network monitoring logs with fields like timestamp, source IP, destination IP, event type, user name, and message.
 
-2. **`security_logs`**, **`system_logs`**, **`application_logs`**: Store event logs of different types with fields like event time, event ID, level, and message[1].
+2. **`security_logs`**, **`system_logs`**, **`application_logs`**: Store event logs of different types with fields like event time, event ID, level, and message.
 
-3. **`usage_data`**: Stores CPU and RAM usage data with fields like timestamp, CPU usage, and RAM usage[1].
+3. **`usage_data`**: Stores CPU and RAM usage data with fields like timestamp, CPU usage, and RAM usage.
 
 ## Future Improvements
 1. **Enhance Event Log Extraction**: Expand the event log extraction capabilities to include more types of logs and provide more detailed information.
