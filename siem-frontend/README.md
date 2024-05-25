@@ -120,28 +120,12 @@ Save the file and exit the text editor.
 ### Conclusion
 
 You have now successfully set up MySQL on your Kali Linux system. You can proceed to use it for your applications and projects.
-```
-## Configuration
-
-1. Open the `config.json` file in the agent directory.
-2. Update the MySQL credentials with your database connection details.
-
-```json
-{
-  "mysql": {
-    "host": "your-server-ip",
-    "user": "mysql-usename",
-    "password": "mysql-password",
-    "database": "database-name"
-  }
-}
-```
 
 ## Running the Agent
 
 Start the agent by running the following command:
 ```sh
-node agent.js
+python agent.py
 ```
 
 ## Monitoring and Management
