@@ -1,5 +1,5 @@
 # I am currently working on this project
-- For installation and configuration of agent and mysql go to siem-frontend
+- For installation and configuration of Agent.py and MySQLl, go to siem-frontend
 
 # Security Information and Event Management(SIEM) Solution
 
