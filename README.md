@@ -21,7 +21,7 @@ The React application fetches data from an API and displays it in various chart 
 
 #### Key Functions and Components
 
-1. **`fetchData`**: A reusable function to fetch data from the API and set the state.
+1. **`fetchData`**: This function is designed to fetch data from the API endpoint corresponding to the provided `table` parameter and then update the state using the `setData` function.
 
     ```javascript
     const fetchData = async (table, setData) => {
@@ -34,7 +34,16 @@ The React application fetches data from an API and displays it in various chart 
     };
     ```
 
-2. **Chart Rendering Functions**: Functions to render different types of charts (Pie, Scatter, Line, Funnel).
+    - **Parameters**:
+        - `table`: A string representing the name of the table from which data is to be fetched.
+        - `setData`: A function used to update the state with the fetched data.
+
+    - **Functionality**:
+        - This function utilizes Axios, a promise-based HTTP client for JavaScript, to make an asynchronous GET request to the specified API endpoint.
+        - Upon receiving a successful response, it extracts the data from the response object and updates the state using the `setData` function.
+        - In case of any errors during the fetch operation, it logs the error to the console for debugging purposes.
+
+2. **Chart Rendering Functions**: These functions render different types of charts based on the provided data and title.
 
     ```javascript
     const renderPieChart = (data, title) => {
@@ -62,9 +71,20 @@ The React application fetches data from an API and displays it in various chart 
     };
     ```
 
-    Similar functions exist for `renderScatterChart`, `renderLineChart`, and `renderFunnelChart`.
+    - **Parameters**:
+        - `data`: An array of log data used to generate the chart.
+        - `title`: A string representing the title of the chart.
 
-3. **`renderTable`**: Function to render a DataGrid table displaying logs data.
+    - **Functionality**:
+        - These functions generate chart data based on specific criteria (e.g., counting occurrences of each level).
+        - The chart data is structured according to the format expected by the corresponding chart component (e.g., Pie chart).
+        - Each function returns JSX code that renders the chart component with the generated chart data.
+
+    - **Usage**:
+        - These functions are invoked with appropriate data and title parameters to render specific types of charts within the application.
+
+
+3. **`renderTable`**: This function generates a DataGrid component to display logs data in tabular format.
 
     ```javascript
     const renderTable = (data) => {
@@ -83,7 +103,21 @@ The React application fetches data from an API and displays it in various chart 
     };
     ```
 
-4. **`LogsSection`**: Component to display logs with chart type selector and DataGrid table.
+    - **Parameters**:
+        - `data`: An array containing log data to be displayed in the table.
+
+    - **Functionality**:
+        - This function dynamically generates table columns based on the keys of the first log object in the provided data array.
+        - Each column's field name is set to the corresponding key in the log object.
+        - Column headers are derived from the keys and are converted to uppercase.
+        - The `message` column is given a larger width (400px) compared to other columns (150px).
+        - The DataGrid component is rendered with the generated columns and the log data rows.
+        - Pagination is enabled with a page size of 5 rows.
+        - The table adjusts its height automatically based on its content.
+
+    - **Usage**:
+        - Invoke this function with an array of logs data to render the corresponding DataGrid table.
+4. **`LogsSection`**: This component renders logs data along with a chart type selector and a DataGrid table.
 
     ```javascript
     const LogsSection = ({ title, data }) => {
@@ -115,7 +149,19 @@ The React application fetches data from an API and displays it in various chart 
     };
     ```
 
-5. **`NetworkingSection`**: Specialized section for networking logs filtered to include only 'Nmap scan' and 'Ping' events.
+    - **Props**:
+        - `title`: Title of the logs section.
+        - `data`: Array of log data to be displayed.
+
+    - **Functionality**:
+        - This component displays a title for the logs section.
+        - It provides buttons to select different types of charts (Pie, Scatter, Line, Funnel).
+        - The selected chart type determines the type of chart displayed for the log data.
+        - It renders a DataGrid table to display the log data in a tabular format.
+
+    - **Usage**:
+        - Include this component in the main App component, passing the title and data props to display logs with chart and table.
+5. **`NetworkingSection`**: This section is specialized for displaying networking logs filtered to include only 'Nmap scan' and 'Ping' events.
 
     ```javascript
     const NetworkingSection = ({ data }) => {
@@ -131,7 +177,17 @@ The React application fetches data from an API and displays it in various chart 
     };
     ```
 
-6. **`App`**: Main component managing state and rendering different sections based on the selected tab.
+    - **Props**:
+        - `data`: Array of log data to be filtered and displayed.
+
+    - **Functionality**:
+        - This component filters the input log data to include only 'Nmap scan' and 'Ping' events.
+        - It displays the filtered networking logs using a Pie chart, Scatter chart, and DataGrid table.
+        - The Pie chart represents the distribution of events, the Scatter chart shows event time vs. event ID, and the DataGrid table presents detailed log information.
+
+    - **Usage**:
+        - Include this component in the main App component to display filtered networking logs.
+6. **`App`**: This is the main component responsible for managing state and rendering different sections based on the selected tab.
 
     ```javascript
     const App = () => {
@@ -191,6 +247,26 @@ The React application fetches data from an API and displays it in various chart 
       );
     };
     ```
+
+    - **State**:
+        - `logs`: State variable to store logs data.
+        - `securityLogs`: State variable to store security logs data.
+        - `systemLogs`: State variable to store system logs data.
+        - `applicationLogs`: State variable to store application logs data.
+        - `tabIndex`: State variable to keep track of the currently selected tab index.
+
+    - **Effects**:
+        - The `useEffect` hook is used to fetch data for different log types when the component mounts.
+
+    - **Functions**:
+        - `handleTabChange`: Function to handle tab changes and update the selected tab index.
+
+    - **Theme**:
+        - The component uses the Material-UI `createTheme` function to set the light mode theme.
+
+    - **Rendering**:
+        - The component renders a Material-UI AppBar with tabs for different log types.
+        - Based on the selected tab, it renders the corresponding section using `LogsSection` or `NetworkingSection`.
 
 ### `TabPanel` Component
 
