@@ -58,7 +58,7 @@ The React application fetches data from an API and displays it in various chart 
           {
             label: title,
             data: Object.values(levels),
-            backgroundColor: ['green', 'red', 'yellow'],
+          backgroundColor: ['green', 'yellow', 'red', 'rgba(139, 0, 0, 0.7)'],
           },
         ],
       };
