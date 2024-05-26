@@ -148,7 +148,7 @@ const LogsSection = ({ title, data }) => {
         {
           label: title,
           data: Object.values(levels),
-          backgroundColor: ['green', 'red', 'yellow'],
+          backgroundColor: ['green', 'yellow', 'red', 'rgba(139, 0, 0, 0.7)'],
         },
       ],
     };
@@ -210,7 +210,7 @@ const LogsSection = ({ title, data }) => {
         {
           label: title,
           data: Object.values(levels),
-          backgroundColor: ['green', 'red', 'yellow'],
+          backgroundColor: ['green', 'yellow','red', 'rgba(139, 0, 0, 0.7)'],
         },
       ],
     };
